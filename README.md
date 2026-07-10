@@ -1,3 +1,5 @@
+[![CI](https://github.com/Raphasha27/kirov-algorithms/actions/workflows/ci.yml/badge.svg)](https://github.com/Raphasha27/kirov-algorithms/actions/workflows/ci.yml)
+
 # Kirov Algorithms 🧠⚡
 
 [![Security](https://img.shields.io/badge/Security-Policy-1f6feb?style=for-the-badge&logo=github)](SECURITY.md)
