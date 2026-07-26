@@ -1,5 +1,5 @@
 openai==2.44.0
-requests==2.32.3
+requests==2.34.2
 pydantic==2.9.2
 pytest==8.3.3
 ruff==0.6.9
