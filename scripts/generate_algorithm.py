@@ -1,13 +1,13 @@
-import os
-import requests
-import json
 import base64
+import os
 import random
 import subprocess
-import tempfile
 import sys
+import tempfile
+from datetime import datetime, timezone
+
+import requests
 from openai import OpenAI
-from datetime import datetime
 
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
@@ -51,10 +51,8 @@ def generate_algorithm_code(algo_name):
         temperature=0.3
     )
     code = response.choices[0].message.content.strip()
-    if code.startswith("```python"):
-        code = code[9:]
-    if code.endswith("```"):
-        code = code[:-3]
+    code = code.removeprefix("```python")
+    code = code.removesuffix("```")
     return code.strip()
 
 def run_tests_securely(code_str):
@@ -70,7 +68,7 @@ def run_tests_securely(code_str):
         
     try:
         # Run pytest on the temporary file
-        result = subprocess.run(["pytest", tmp_path, "-v"], capture_output=True, text=True, timeout=30)
+        result = subprocess.run(["pytest", tmp_path, "-v"], capture_output=True, text=True, timeout=30, check=False)
         success = result.returncode == 0
         output = result.stdout
     except subprocess.TimeoutExpired:
@@ -114,7 +112,7 @@ def push_to_github(algo_name, code_str):
         return False
 
 def main():
-    print(f"[{datetime.utcnow().isoformat()}] Starting daily algorithm generation...")
+    print(f"[{datetime.now(tz=timezone.utc).isoformat()}] Starting daily algorithm generation...")
     
     # Pick a random algorithm
     algo = random.choice(ALGORITHMS)
